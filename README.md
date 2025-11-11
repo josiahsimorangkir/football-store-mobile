@@ -160,3 +160,23 @@ Kapan Digunakan:
     b. Menambah package baru
     c. Mengubah variable static/global
     d. Hot reload tidak bekerja
+
+
+
+# Tugas 8
+
+## Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement() pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
+
+Navigator.push() digunakan untuk menampilkan halaman baru di atas halaman saat ini, sehingga user masih bisa kembali dengan tombol back, sedangkan Navigator.pushReplacement() mengganti halaman yang sedang aktif dengan halaman baru dan menghapus halaman sebelumnya dari stack navigasi. Pada aplikasi saya, Navigator.push() cocok digunakan untuk halaman seperti Add Product agar user dapat kembali ke halaman produk, sementara Navigator.pushReplacement() lebih sesuai untuk berpindah ke Home Page karena halaman utama tidak perlu kembali ke halaman sebelumnya.
+
+## Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
+
+Dalam Flutter, Scaffold digunakan sebagai kerangka utama halaman yang menyediakan struktur dasar seperti AppBar, Drawer, dan body. AppBar menampilkan judul atau aksi utama di bagian atas halaman, sedangkan Drawer digunakan untuk navigasi antarhalaman seperti Home, My Products, dan Add Products. Dengan menggunakan hierarki ini secara konsisten di setiap halaman Football Store, tampilan aplikasi jadi teratur, mudah dinavigasi.
+
+## Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu.
+
+Widget seperti Padding, SingleChildScrollView, dan ListView membantu menciptakan tampilan form yang rapi, responsif, dan nyaman digunakan. Padding memberi jarak antar elemen agar tidak menempel di tepi layar, SingleChildScrollView memungkinkan halaman di-scroll saat konten melebihi layar, dan ListView mempermudah penataan banyak elemen form secara vertikal. Dalam aplikasi saya, kombinasi ketiga widget ini digunakan pada halaman Add Product agar form produk tampil bersih dan tetap bisa diakses meskipun keyboard muncul
+
+## Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
+
+Warna tema penting untuk menciptakan identitas visual yang konsisten di seluruh aplikasi. Pada Football Store, tema warna disesuaikan dengan karakteristik brand menggunakan kombinasi hijau dan putih yang mencerminkan nuansa lapangan sepak bola. Pengaturan ini dilakukan melalui ThemeData di MaterialApp, yang mengatur warna utama (primaryColor), warna tombol, serta tampilan AppBar. Dengan penerapan warna yang seragam, aplikasi terlihat profesional, mudah dikenali, dan memiliki kesan visual yang kuat.
