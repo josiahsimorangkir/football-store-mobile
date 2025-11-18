@@ -9,9 +9,9 @@ class MyHomePage extends StatelessWidget {
     final String npm = "2406414593"; //npm
     final String kelas = "F"; //kelas
     final List<ItemHomepage> items = [
-        ItemHomepage("All Products", Icons.newspaper),
-        ItemHomepage("My Products", Icons.newspaper),
-        ItemHomepage("Create Product", Icons.create),
+        ItemHomepage("See Products", Icons.newspaper),
+        ItemHomepage("Add Products", Icons.newspaper),
+        ItemHomepage("Logout", Icons.logout),
     ];
     @override
         Widget build(BuildContext context) {
@@ -41,9 +41,9 @@ class MyHomePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                InfoCard(title: 'NPM', content: npm),
-                InfoCard(title: 'Name', content: nama),
-                InfoCard(title: 'Class', content: kelas),
+                InfoCard(name: 'NPM', description: npm),
+                InfoCard(name: 'Name', description: nama),
+                InfoCard(name: 'Class', description: kelas),
               ],
             ),
 
@@ -96,10 +96,10 @@ class MyHomePage extends StatelessWidget {
 class InfoCard extends StatelessWidget {
   // Kartu informasi yang menampilkan title dan content.
 
-  final String title;  // Judul kartu.
-  final String content;  // Isi kartu.
+  final String name;  // Judul kartu.
+  final String description;  // Isi kartu.
 
-  const InfoCard({super.key, required this.title, required this.content});
+  const InfoCard({super.key, required this.name, required this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -114,11 +114,11 @@ class InfoCard extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              title,
+              name,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8.0),
-            Text(content),
+            Text(description),
           ],
         ),
       ),
