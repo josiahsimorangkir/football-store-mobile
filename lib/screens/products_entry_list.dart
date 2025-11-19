@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 class ProductsEntryListPage extends StatefulWidget {
-  const ProductsEntryListPage({super.key});
+  const ProductsEntryListPage({super.key, required this.filterByUser});
+  final bool filterByUser; // false untuk semua produk, true untuk produk user saja
 
   @override
   State<ProductsEntryListPage> createState() => _ProductsEntryListPageState();
@@ -15,11 +16,14 @@ class ProductsEntryListPage extends StatefulWidget {
 
 class _ProductsEntryListPageState extends State<ProductsEntryListPage> {
   Future<List<ProductsEntry>> fetchProducts(CookieRequest request) async {
+    String urlEndpoint = widget.filterByUser
+        ? 'http://localhost:8000/json-by-user/' // Endpoint User
+        : 'http://localhost:8000/json/';        // Endpoint Semua
     // TODO: Replace the URL with your app's URL and don't forget to add a trailing slash (/)!
     // To connect Android emulator with Django on localhost, use URL http://10.0.2.2/
     // If you using chrome,  use URL http://localhost:8000
     
-    final response = await request.get('http://localhost:8000/json/');
+    final response = await request.get(urlEndpoint);
     
     // Decode response to json format
     var data = response;

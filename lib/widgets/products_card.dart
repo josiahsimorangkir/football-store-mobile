@@ -44,14 +44,23 @@ class ItemCard extends StatelessWidget {
             );
 
 
-            if (item.name == "See Products") {
-            Navigator.push(
+            if (item.name == "All Products") {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProductsEntryListPage(filterByUser: false,)
+                  ),
+              );
+            }
+
+            else if (item.name == "My Products") {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const ProductsEntryListPage()
+                  builder: (context) => const ProductsEntryListPage(filterByUser: true,),
                 ),
-            );
-        }
+              );
+            }
 
             else if (item.name == "Add Products") {
               Navigator.push(

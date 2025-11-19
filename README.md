@@ -180,3 +180,34 @@ Widget seperti Padding, SingleChildScrollView, dan ListView membantu menciptakan
 ## Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
 
 Warna tema penting untuk menciptakan identitas visual yang konsisten di seluruh aplikasi. Pada Football Store, tema warna disesuaikan dengan karakteristik brand menggunakan kombinasi hijau dan putih yang mencerminkan nuansa lapangan sepak bola. Pengaturan ini dilakukan melalui ThemeData di MaterialApp, yang mengatur warna utama (primaryColor), warna tombol, serta tampilan AppBar. Dengan penerapan warna yang seragam, aplikasi terlihat profesional, mudah dikenali, dan memiliki kesan visual yang kuat.
+
+
+# Tugas 9
+
+## Jelaskan mengapa kita perlu membuat model Dart saat mengambil/mengirim data JSON? Apa konsekuensinya jika langsung memetakan Map<String, dynamic> tanpa model (terkait validasi tipe, null-safety, maintainability)?
+
+kita perlu membuat model Dart saat mengambil atau mengirim data JSON karena model memberi struktur dan jaminan tipe yang jelas, sehingga setiap field yang diterima atau dikirim memiliki tipe yang benar dan tidak berubah-ubah. Jika kita hanya pake Map<String, dynamic>, kita kehilangan validasi tipe, rentan terjadi error runtime (misalnya field price ternyata null atau bukan int), dan kode menjadi sulit dirawat karena tidak ada kontrak data yang pasti. Dengan model, semua operasi lebih aman secara null-safety, autocomplete lebih akurat, refactor lebih mudah, dan kesalahan bisa terdeteksi di compile-time, bukan saat aplikasi berjalan.
+
+## Apa fungsi package http dan CookieRequest dalam tugas ini? Jelaskan perbedaan peran http vs CookieRequest.
+
+package http dipakai untuk melakukan request HTTP biasa seperti GET atau POST tanpa manajemen sesi. Artinya setiap request berdiri sendiri, tidak menyimpan cookie login, dan cocok untuk endpoint publik seperti mengambil daftar produk atau memanggil API yang tidak membutuhkan autentikasi.
+
+Sementara itu, CookieRequest (dari package pbp_django_auth) berperan sebagai session manager yang menyimpan cookie autentikasi setelah user login. Dengan ini, request ke backend Django akan membawa sessionid secara otomatis, sehingga bisa mengakses endpoint yang membutuhkan login—misalnya membuat produk, melihat produk milik sendiri, atau fitur “My Products”.
+
+Jadi bedanya: http = request stateless tanpa sesi, sedangkan CookieRequest = request dengan sesi dan autentikasi otomatis.
+
+##  Jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+
+Instance CookieRequest perlu dibagikan ke semua komponen (melalui Provider) karena objek ini menyimpan state autentikasi, termasuk cookie sesi (sessionid) yang membuat user tetap login. Jika tiap halaman membuat instance CookieRequest baru, maka cookie tidak akan tersimpan, user dianggap belum login di halaman lain, dan semua request ke endpoint Django yang membutuhkan autentikasi akan gagal. Dengan membagikan instance yang sama ke seluruh widget, seluruh bagian aplikasi dapat mengakses status login, mengirim request terautentikasi, dan menjaga pengalaman pengguna tetap konsisten tanpa harus login berulang-ulang.
+
+ ## Jelaskan konfigurasi konektivitas yang diperlukan agar Flutter dapat berkomunikasi dengan Django. Mengapa kita perlu menambahkan 10.0.2.2 pada ALLOWED_HOSTS, mengaktifkan CORS dan pengaturan SameSite/cookie, dan menambahkan izin akses internet di Android? Apa yang akan terjadi jika konfigurasi tersebut tidak dilakukan dengan benar?
+
+ Agar Flutter bisa berkomunikasi dengan Django, beberapa konfigurasi harus disetel dengan benar. Alamat 10.0.2.2 perlu dimasukkan ke ALLOWED_HOSTS karena emulator Android tidak bisa mengakses localhost secara langsung, dan tanpa itu Django akan menolak request. Django juga harus mengaktifkan CORS dan mengizinkan pengiriman cookie lintas origin—termasuk mengatur SameSite=None dan Secure—supaya session login dapat terkirim ke Flutter; jika tidak, aplikasi akan selalu dianggap belum login meskipun kredensial benar. Di sisi Android, aplikasi harus diberikan izin INTERNET agar bisa melakukan request ke server; tanpa izin ini, seluruh API call akan gagal. Jika salah satu konfigurasi ini tidak dilakukan dengan benar, Flutter dapat gagal terhubung ke server, request diblokir, atau session login tidak terbaca.
+
+ ## Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.
+
+ Mekanisme pengiriman data di Flutter dimulai dari user masukin input melalui widget seperti TextField, lalu nilai tersebut ditangkap oleh controller dan diformat/ divalidasi sebelum dikirim ke backend melalui HTTP request. Backend kemudian memproses data dan mengirimkan respons berupa JSON. Flutter menerima respons ini, mengonversinya ke model Dart, lalu memperbarui state (menggunakan setState, Provider, Bloc, dan lain-lain). Setelah state berubah, Flutter otomatis melakukan rebuild UI, sehingga data yang diterima dapat ditampilkan di layar.
+
+ ## Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+
+ Mekanisme autentikasi Flutter–Django dimulai ketika pengguna mengisi data akun (untuk login atau register) di Flutter. Data ini dikirim ke Django melalui HTTP request dalam format JSON. Untuk register, Django menerima data, memvalidasi, membuat akun baru, lalu mengembalikan respons (misalnya status sukses). Untuk login, Django memeriksa kecocokan email/username dan password, lalu jika benar Django membuat dan mengirimkan token autentikasi (misalnya JWT atau token session) kembali ke Flutter. Flutter kemudian menyimpan token ini (misalnya di SharedPreferences atau SecureStorage) dan menggunakan token tersebut untuk setiap request selanjutnya agar pengguna tetap terautentikasi. Setelah token tersimpan, Flutter memperbarui state (logged-in) dan menampilkan menu utama atau halaman beranda. Saat logout, Flutter menghapus token dari penyimpanan lokal dan (opsional) mengirim request logout ke Django. Setelah token dihapus, Flutter kembali ke halaman login karena pengguna dianggap tidak lagi memiliki izin akses.
